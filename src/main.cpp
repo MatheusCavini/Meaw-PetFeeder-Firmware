@@ -4,6 +4,7 @@
 #include "displaySystem.h"
 #include "alarmSystem.h"
 #include "stateMachine.h"
+#include "dispenserSystem.h"
  
 int state;
 int event;
@@ -14,9 +15,10 @@ void setup() {
     //Inicializa todos os módulos
     display_init();
     alarm_init();
+    dispenser_init();
     stateMachine_init();
     eventQ_init();
-    state = IDLE;
+    state = SERVING_PORTION;
     event =  NO_EVENT;
     lastLevelCheck = millis();
 }

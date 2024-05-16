@@ -2,6 +2,7 @@
 #include "displaySystem.h"
 #include "alarmSystem.h"
 #include "stateMachine.h"
+#include "dispenserSystem.h"
 
 //Matriz que relaciona estado atual e evento com o próximo estado
 int stateTransitionMatrix[STATES_QNT][EVENTS_QNT];
@@ -23,6 +24,9 @@ void stateMachine_init(){
 
     stateTransitionMatrix[LOW_LEVEL][LEVEL_GOES_UP] = IDLE;
     stateOutputsMatrix[LOW_LEVEL] =  DISPLAY_LOW_LEVEL;
+
+    stateTransitionMatrix[SERVE_PORTION][FINISH_PORTION_SERVE] = IDLE;
+    stateOutputsMatrix[SERVING_PORTION] = SERVE_PORTION;
 }
 
 //Consulta a matriz de transição e retorna o próximo estado
@@ -44,6 +48,10 @@ void handleOutput(int output){
         break;
     case DISPLAY_LOW_LEVEL:
         displayShow("NIVEL BAIXO!",0,0);
+        break;
+    case SERVE_PORTION:
+        displayShow("SERVINDO...", 0,0);
+        dispenserServePortion();
         break;
     
     default:
@@ -68,9 +76,6 @@ void eventQ_init(){
         internEventCount = 0;
     }
 }
-
-int eventCount = 0;
-int internEventCount = 0;
 
 
 //Funções de inserção de evento

@@ -5,8 +5,8 @@
 
 #define SOUND_SPEED 0.034 //cm/us
 
-const int trigPin = 18;
-const int echoPin = 5;
+const int trigPin = 15;
+const int echoPin = 2;
 
 
 long duration;
