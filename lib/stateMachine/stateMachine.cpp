@@ -52,17 +52,28 @@ void handleOutput(int output){
 }
 
 
+//Criação das filas de eventos internos e gerais
 #define MAX_EVENTS 50
 int EventsQueue[MAX_EVENTS];
+int InternEventsQueue[MAX_EVENTS];
+int eventCount;
+int internEventCount;
 
+//Inicialização das filas
 void eventQ_init(){
     for(int i=0; i<MAX_EVENTS; i++){
         EventsQueue[i]= NO_EVENT;
+        InternEventsQueue[i] = NO_EVENT;
+        eventCount = 0;
+        internEventCount = 0;
     }
 }
 
 int eventCount = 0;
+int internEventCount = 0;
 
+
+//Funções de inserção de evento
 void addEvent(int event){
     int i;
     for(i=0; i<eventCount; i++);
@@ -70,6 +81,15 @@ void addEvent(int event){
     eventCount ++;
 }
 
+void addInternEvent(int event){
+    int i;
+    for(i=0; i<internEventCount; i++);
+    InternEventsQueue[i] = event;
+    internEventCount ++;
+}
+
+
+//Funções de leitura + dequeue de eventos em fila
 int getEvent(){
     if (eventCount == 0) {
         return NO_EVENT; // No events in the queue
@@ -83,5 +103,19 @@ int getEvent(){
         eventCount--; // Decrement the event count
         return firstEvent; // Return the dequeued event
     }
+}
 
+int getInternEvent(){
+    if (internEventCount == 0) {
+        return NO_EVENT; // No events in the queue
+    } else {
+        int firstEvent = InternEventsQueue[0]; // Get the first event
+        // Shift elements to the left to remove the first event
+        for (int i = 0; i < internEventCount - 1; i++) {
+            InternEventsQueue[i] = InternEventsQueue[i + 1];
+        }
+        InternEventsQueue[internEventCount - 1] = NO_EVENT; // Clear the last element
+        internEventCount--; // Decrement the event count
+        return firstEvent; // Return the dequeued event
+    }
 }

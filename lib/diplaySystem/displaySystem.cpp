@@ -5,12 +5,16 @@
 
 LiquidCrystal_I2C lcd(0x27, 16, 2);
 
+
+//Inicialização do módulo do display
 void display_init(){
     lcd.init();
     lcd.backlight();
     lcd.setCursor(0,0);
 }
 
+
+//Exibição no display na posição (row, column)
 void displayShow(char string[], int row, int column){
     lcd.setCursor(row,column);
     lcd.print(string);

@@ -24,7 +24,9 @@ int getOutput(int state);
 void handleOutput(int output);
 void eventQ_init();
 int getEvent();
+int getInternEvent();
 void addEvent(int event);
+void addInternEvent(int event);
 
 
 #endif
