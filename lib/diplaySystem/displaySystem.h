@@ -3,6 +3,7 @@
 
 void display_init();
 void displayShow(char string[], int row, int column);
-void displayTime(int H, int M, int S);
+void displayTime(int H, int M, int row, int column);
+void displayClear();
 
 #endif

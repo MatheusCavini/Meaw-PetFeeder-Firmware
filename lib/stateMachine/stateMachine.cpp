@@ -19,14 +19,31 @@ void stateMachine_init(){
         }
     }
 
-    stateTransitionMatrix[IDLE][LEVEL_GOES_DOWN] = LOW_LEVEL;
-    stateOutputsMatrix[IDLE] = DISPLAY_IDLE;
+    stateTransitionMatrix[START][LEVEL_GOES_DOWN] = LOW_LEVEL;
+    stateTransitionMatrix[START][SERVE_NOW] = SERVING_PORTION;
+    stateTransitionMatrix[START][TIMES_MENU_SELECTED] = TIMES_MENU;
+    
+    stateTransitionMatrix[LOW_LEVEL][LEVEL_GOES_UP] = START;
 
-    stateTransitionMatrix[LOW_LEVEL][LEVEL_GOES_UP] = IDLE;
+    stateTransitionMatrix[SERVING_PORTION][FINISH_PORTION_SERVE] = START;
+
+    stateTransitionMatrix[TIMES_MENU][GO_BACK] = START;
+    stateTransitionMatrix[TIMES_MENU][ADD_TIME_SELECTED] = ADD_TIME_MENU;
+
+    stateTransitionMatrix[ADD_TIME_MENU][GO_BACK] = TIMES_MENU;
+    stateTransitionMatrix[ADD_TIME_MENU][NEW_TIME_INSERTED] = WAIT_ADD_CONFIRM;
+
+    stateTransitionMatrix[WAIT_ADD_CONFIRM][GO_BACK] = ADD_TIME_MENU;
+    stateTransitionMatrix[WAIT_ADD_CONFIRM][NEW_TIME_CONFIRMED] = START;
+
+    
+
+    stateOutputsMatrix[START] = DISPLAY_START;
     stateOutputsMatrix[LOW_LEVEL] =  DISPLAY_LOW_LEVEL;
-
-    stateTransitionMatrix[SERVE_PORTION][FINISH_PORTION_SERVE] = IDLE;
     stateOutputsMatrix[SERVING_PORTION] = SERVE_PORTION;
+    stateOutputsMatrix[TIMES_MENU] = DISPLAY_TIMES_MENU;
+    stateOutputsMatrix[ADD_TIME_MENU] = DISPLAY_ADD_TIME;
+    stateOutputsMatrix[WAIT_ADD_CONFIRM] = DISPLAY_ADD_CONFIRM;
 }
 
 //Consulta a matriz de transição e retorna o próximo estado
@@ -43,16 +60,31 @@ int getOutput(int state){
 void handleOutput(int output){
     switch (output)
     {
-    case DISPLAY_IDLE:
-        displayShow("ESTADO IDLE", 0,0);
+    case DISPLAY_START:
+        displayShow("A-MENU HORARIOS ", 0,0);
+        displayShow("B-SERVIR AGORA  ", 1,0);
         break;
     case DISPLAY_LOW_LEVEL:
-        displayShow("NIVEL BAIXO!",0,0);
+        displayShow("NIVEL BAIXO!    ", 0,0);
+        displayShow("                ", 1,0);
         break;
     case SERVE_PORTION:
-        displayShow("SERVINDO...", 0,0);
+        displayShow("SERVINDO...     ", 0,0);
+        displayShow("                ", 1,0);
         dispenserServePortion();
         break;
+    case DISPLAY_TIMES_MENU:
+        displayShow("A-NOVO  C-VOLTAR", 0,0);
+        displayShow("B-EXCLUIR       ", 1,0);
+        break;
+    case DISPLAY_ADD_TIME:
+        displayShow("  INSIRA:  00:00", 0,0);
+        displayShow("B-VOLTAR        ", 1,0);
+        break;
+    case DISPLAY_ADD_CONFIRM:
+        displayShow("A-SALVAR:", 0,0);
+        displayShow("B-CANCELAR        ", 1,0);
+
     
     default:
         break;

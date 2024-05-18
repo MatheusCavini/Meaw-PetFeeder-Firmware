@@ -5,6 +5,7 @@
 #include "alarmSystem.h"
 #include "stateMachine.h"
 #include "dispenserSystem.h"
+#include "keyboard.h"
  
 int state;
 int event;
@@ -13,12 +14,13 @@ unsigned long lastLevelCheck;
  
 void setup() {
     //Inicializa todos os módulos
+    Serial.begin(9600);
     display_init();
     alarm_init();
     dispenser_init();
-    stateMachine_init();
     eventQ_init();
-    state = SERVING_PORTION;
+    stateMachine_init();
+    state = START;
     event =  NO_EVENT;
     lastLevelCheck = millis();
 }
@@ -32,6 +34,8 @@ void loop() {
         lastLevelCheck = now;
     }
 
+    keyboardReadCycle();
+
     //Executa o Loop de atualização da Máquina de Estados
 
     //Eventos internos são processados com prioridade
@@ -43,5 +47,10 @@ void loop() {
     state = getNextState(state, event);
     output = getOutput(state);
     handleOutput(output);
+
+    Serial.print("Estado: ");
+    Serial.println(state);
+    Serial.print("Evento: ");
+    Serial.println(event);
     delay(100);
 }

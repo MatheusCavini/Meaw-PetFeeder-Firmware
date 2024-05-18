@@ -16,14 +16,17 @@ void display_init(){
 
 //Exibição no display na posição (row, column)
 void displayShow(char string[], int row, int column){
-    lcd.setCursor(row,column);
+    lcd.setCursor(column, row);
     lcd.print(string);
 }
 
-void displayTime(int H, int M, int S){
+void displayClear(){
+    lcd.clear();
+}
+
+void displayTime(int H, int M, int row, int column){
     char hour[3];
     char min[3];
-    char sec[3];
 
     if(H<10){
         sprintf(hour, "0%d", H);
@@ -37,14 +40,8 @@ void displayTime(int H, int M, int S){
         sprintf(min, "%d", M);
     }
 
-    if(S<10){
-        sprintf(sec, "0%d", S);
-    }else{
-        sprintf(sec, "%d", S);
-    }
-
-    
-    char timeFormat[9]; 
-    sprintf(timeFormat, "%s:%s:%s", hour, min, sec);
+    char timeFormat[6]; 
+    sprintf(timeFormat, "%s:%s", hour, min);
+    lcd.setCursor(column, row);
     lcd.print(timeFormat);
 }
