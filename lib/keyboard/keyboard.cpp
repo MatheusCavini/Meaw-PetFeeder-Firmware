@@ -4,6 +4,7 @@
 #include "keyboard.h"
 #include "displaySystem.h"
 #include "math.h"
+#include "timesDB.h"
 
 #define ROWS  4
 #define COLS  4
@@ -28,7 +29,7 @@ int clicks = 0;
 
 //O tratamento dos inputs de teclado gera eventos diferentes em função do estado atual
 char keyboardReadCycle(){
-    key = keypad.getKey(); // Declare and initialize key variable
+    key = keypad.getKey(); 
     if(key){
     switch (state)
         {
@@ -51,6 +52,7 @@ char keyboardReadCycle(){
                 break;
             
             case ADD_TIME_MENU:
+                //Espera a inserção de 4 dados: HH:MM
                 while(clicks<4){
                     displayTime(H, M, 0, 11);
                     if(key == 'B'){
@@ -78,10 +80,11 @@ char keyboardReadCycle(){
             case WAIT_ADD_CONFIRM:
                 if(key == 'A'){
                     if(H<24 && M<60){
+                        saveTime(H, M);
                         displayShow("SALVO COM       ",0,0);
                         displayShow("SUCESSO!        ",1,0);
                         delay(2000);
-                        addEvent(NEW_TIME_CONFIRMED);
+                        addEvent(NEW_TIME_SAVED);
                     }else{
                         displayShow("HORARIO         ",0,0);
                         displayShow("INVALIDO!       ",1,0);

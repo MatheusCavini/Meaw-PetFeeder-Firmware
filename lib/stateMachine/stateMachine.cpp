@@ -34,10 +34,9 @@ void stateMachine_init(){
     stateTransitionMatrix[ADD_TIME_MENU][NEW_TIME_INSERTED] = WAIT_ADD_CONFIRM;
 
     stateTransitionMatrix[WAIT_ADD_CONFIRM][GO_BACK] = ADD_TIME_MENU;
-    stateTransitionMatrix[WAIT_ADD_CONFIRM][NEW_TIME_CONFIRMED] = START;
+    stateTransitionMatrix[WAIT_ADD_CONFIRM][NEW_TIME_SAVED] = START;
 
     
-
     stateOutputsMatrix[START] = DISPLAY_START;
     stateOutputsMatrix[LOW_LEVEL] =  DISPLAY_LOW_LEVEL;
     stateOutputsMatrix[SERVING_PORTION] = SERVE_PORTION;

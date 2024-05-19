@@ -6,6 +6,8 @@
 #include "stateMachine.h"
 #include "dispenserSystem.h"
 #include "keyboard.h"
+#include "timesDB.h"
+#include "Preferences.h"
  
 int state;
 int event;
@@ -18,11 +20,26 @@ void setup() {
     display_init();
     alarm_init();
     dispenser_init();
+    timesDB_init();
     eventQ_init();
     stateMachine_init();
     state = START;
     event =  NO_EVENT;
     lastLevelCheck = millis();
+    delay(2000);
+    
+
+    
+    /* int qnt = retrieveQNT();
+    int H[qnt];
+    int M[qnt];
+    retrieveAllTimes(H, M);
+    Serial.println("Horários salvos:");
+    for(int i; i<qnt; i++){
+        Serial.print(H[i]);
+        Serial.print(":");
+        Serial.println(M[i]);
+    } */
 }
 
 
