@@ -25,6 +25,7 @@ char key;
 int H = 0;
 int M = 0;
 int clicks = 0;
+int eraseID = -1;
 
 
 //O tratamento dos inputs de teclado gera eventos diferentes em função do estado atual
@@ -39,14 +40,17 @@ char keyboardReadCycle(){
                 }
                 else if(key == 'B'){
                     addEvent(SERVE_NOW);
+                }else if(key == 'C'){
+                    addEvent(CONNECT_APP_SELECTED);
                 }
                 break;
             
             case TIMES_MENU:
                 if(key == 'A'){
                     addEvent(ADD_TIME_SELECTED);
-                }
-                else if(key == 'C'){
+                }else if(key == 'B'){
+                    addEvent(REMOVE_TIME_SELECTED);
+                }else if(key == 'C'){
                     addEvent(GO_BACK);
                 }
                 break;
@@ -74,7 +78,7 @@ char keyboardReadCycle(){
                     key = keypad.getKey();
                 }
                 displayTime(H, M, 0, 11);
-                if(clicks >=4){addEvent(NEW_TIME_INSERTED);}
+                if(clicks >=4){addEvent(NEW_TIME_INSERTED);};
                 break;
 
             case WAIT_ADD_CONFIRM:
@@ -100,6 +104,35 @@ char keyboardReadCycle(){
                     clicks =0;
                     addEvent(GO_BACK);
                 }
+                break;
+            
+            case REMOVE_TIME_MENU:
+                while(true){
+                    if(key == 'B'){
+                        eraseID =-1;
+                        addEvent(GO_BACK);
+                        break;
+                    }else if(key == 'D' && eraseID<qnt-1){
+                        eraseID ++;
+                        displayTime(listSavedHours[eraseID], listSavedMinutes[eraseID],0,5);
+                    }else if(key == 'C' && eraseID>0){
+                        eraseID --;
+                        displayTime(listSavedHours[eraseID], listSavedMinutes[eraseID],0,5);
+                    }else if(key == 'A' && eraseID> -1){
+                        displayShow("HORARIO  ",0,0);
+                        displayTime(listSavedHours[eraseID], listSavedMinutes[eraseID],0,9);
+                        displayShow("APAGADO!        ",1,0);
+                        removeTime(eraseID);
+                        delay(2000);
+                        eraseID = -1;
+                        addEvent(TIME_REMOVED);
+                        break;
+
+                    }
+                    delay(100);
+                    key = keypad.getKey();
+                }
+                break;
             
             default:
                 break;

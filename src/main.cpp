@@ -8,38 +8,46 @@
 #include "keyboard.h"
 #include "timesDB.h"
 #include "Preferences.h"
+#include "clock.h"
+#include "api.h"
  
 int state;
 int event;
 int output;
 unsigned long lastLevelCheck;
+unsigned long lastAlarmCheck;
+int qnt; // Declare globally so it's accessible in the setup function and header
+int *listSavedHours;
+int *listSavedMinutes;
+
  
 void setup() {
     //Inicializa todos os módulos
     Serial.begin(9600);
+    clock_init();
     display_init();
     alarm_init();
     dispenser_init();
     timesDB_init();
     eventQ_init();
     stateMachine_init();
+    api_init();
     state = START;
     event =  NO_EVENT;
     lastLevelCheck = millis();
-    delay(2000);
+    lastAlarmCheck = millis();
     
 
+    listSavedHours = (int*)malloc(30 * sizeof(int));
+    listSavedMinutes = (int*)malloc(30 * sizeof(int));
     
-    /* int qnt = retrieveQNT();
-    int H[qnt];
-    int M[qnt];
-    retrieveAllTimes(H, M);
+    retrieveAllTimes(listSavedHours, listSavedMinutes);
     Serial.println("Horários salvos:");
-    for(int i; i<qnt; i++){
-        Serial.print(H[i]);
+    for(int i=0; i<qnt; i++){
+        Serial.print(listSavedHours[i]);
         Serial.print(":");
-        Serial.println(M[i]);
-    } */
+        Serial.println(listSavedMinutes[i]);
+    }
 }
 
 
@@ -49,6 +57,11 @@ void loop() {
     if(now - lastLevelCheck > 30000){
         checkLevel();
         lastLevelCheck = now;
+    }
+
+    if(now - lastAlarmCheck > 50000){
+        checkAlarm();
+        lastAlarmCheck = now;
     }
 
     keyboardReadCycle();
