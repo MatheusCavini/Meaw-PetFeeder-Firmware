@@ -18,6 +18,9 @@ void stateMachine_init(){
             stateOutputsMatrix[i] = NO_OUTPUT;
         }
     }
+    for(int i=0; i<STATES_QNT; i++){
+        stateTransitionMatrix[i][SERVE_NOW] = SERVING_PORTION;
+    }
 
     stateTransitionMatrix[START][LEVEL_GOES_DOWN] = LOW_LEVEL;
     stateTransitionMatrix[START][SERVE_NOW] = SERVING_PORTION;
@@ -43,6 +46,7 @@ void stateMachine_init(){
     stateTransitionMatrix[REMOVE_TIME_MENU][TIME_REMOVED] = START;
 
     stateTransitionMatrix[CONNECTING_APP][APP_CONNECTED] = START;
+    stateTransitionMatrix[CONNECTING_APP][GO_BACK] = START;
 
     
     stateOutputsMatrix[START] = DISPLAY_START;
@@ -99,7 +103,7 @@ void handleOutput(int output){
         displayShow("A-APAGAR B-VOLTA", 1,0);
         break;
     case DISPLAY_CONNECTING_APP:
-        displayShow("ID: 1234        ",0,0);
+        displayShow("ID:1234  B-VOLTA",0,0);
         displayShow("Aguardando...   ", 1,0);
         break;
 

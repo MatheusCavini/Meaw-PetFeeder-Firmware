@@ -121,6 +121,7 @@ char keyboardReadCycle(){
                     }else if(key == 'A' && eraseID> -1){
                         displayShow("HORARIO  ",0,0);
                         displayTime(listSavedHours[eraseID], listSavedMinutes[eraseID],0,9);
+                        displayShow(" ", 0, 14);
                         displayShow("APAGADO!        ",1,0);
                         removeTime(eraseID);
                         delay(2000);
@@ -133,6 +134,12 @@ char keyboardReadCycle(){
                     key = keypad.getKey();
                 }
                 break;
+            case CONNECTING_APP:
+                if(key == 'B'){
+                    addEvent(GO_BACK);
+                }
+                break;
+
             
             default:
                 break;
