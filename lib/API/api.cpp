@@ -38,6 +38,26 @@ void api_init(){
         request->send(200, "application/json", jsonString);
     });
 
+    server.on("/1234/getLevel", HTTP_GET, [](AsyncWebServerRequest *request){
+        // Create a JSON document
+        StaticJsonDocument<200> jsonDoc;
+
+        // Create a JSON array within the document
+        JsonArray levelArray = jsonDoc.to<JsonArray>();
+
+        
+        JsonObject levelObj = levelArray.createNestedObject();
+        levelObj["level"] = lastLevel; 
+        
+
+        // Serialize the JSON document to a string
+        String jsonString;
+        serializeJson(jsonDoc, jsonString);
+
+        // Send the JSON response
+        request->send(200, "application/json", jsonString);
+    });
+
     server.on("/1234/serveNow", HTTP_POST, [](AsyncWebServerRequest *request){
         Serial.println("Pedido de servir agora...");
         addEvent(SERVE_NOW);
