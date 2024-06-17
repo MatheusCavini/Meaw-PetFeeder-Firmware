@@ -21,11 +21,16 @@ void clock_init() {
     // Connect to WiFi
     Serial.print("Connecting to ");
     Serial.println(ssid);
+
+    WiFi.mode(WIFI_STA);
+
+  // Configure WiFi to use WPA2 Enterprise with PEAP/MSCHAPv2
     WiFi.begin(ssid, password);
 
     while (WiFi.status() != WL_CONNECTED) {
         delay(1000);
         Serial.print(".");
+        Serial.print(WiFi.status());
     }
     Serial.println();
     Serial.println("WiFi connected.");
@@ -41,7 +46,7 @@ void clock_init() {
     Serial.println(minute());
 }
 
-// Check current time against alarms
+//Verifica o horário atual e gera evento se for igual a um listado
 void checkAlarm() {
     timeClient.update();
     int currentHour = hour();

@@ -49,7 +49,7 @@ void checkLevel(){
     float dist =  measureLevel();
     int newLevel;
     
-    if(dist > 10){
+    if(dist < 23){
         newLevel = HIGH;
     }else{
         newLevel = LOW;

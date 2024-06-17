@@ -12,17 +12,17 @@
 #include "api.h"
 #include <TimeLib.h>
 
-// Task handles
+// Task handlers
 TaskHandle_t TaskStateMachine;
 TaskHandle_t TaskLevelCheck;
 TaskHandle_t TaskAlarmCheck;
 
+//variáveis globais
 int state;
 int event;
 int output;
 int lastMinuteCheck;
 int currentMinuteCheck;
-
 int qnt; 
 int *listSavedHours;
 int *listSavedMinutes;
@@ -48,6 +48,7 @@ void setup() {
     event = NO_EVENT;
     lastMinuteCheck = -1;
 
+    //cria listas para até 30 horários
     listSavedHours = (int*)malloc(30 * sizeof(int));
     listSavedMinutes = (int*)malloc(30 * sizeof(int));
     
@@ -99,9 +100,9 @@ void stateMachineTask(void *pvParameters) {
 
 void levelCheckTask(void *pvParameters) {
     while (1) {
-        //Verifica o nível de ração a cada 30seg (podemos calibrar)
+        //Verifica o nível de ração a cada 10seg (podemos calibrar)
         checkLevel();
-        vTaskDelay(pdMS_TO_TICKS(30000));
+        vTaskDelay(pdMS_TO_TICKS(10000));
     }
 }
 
@@ -109,10 +110,12 @@ void alarmCheckTask(void *pvParameters) {
     while (1) {
         timeClient.update();
         currentMinuteCheck = minute();
+        //Quando o minuto muda, usa a função de verificar alarme
         if (currentMinuteCheck != lastMinuteCheck) {
             checkAlarm();
             lastMinuteCheck = currentMinuteCheck;
         }
         vTaskDelay(pdMS_TO_TICKS(1000));
+        //Verifica a todo segundo
     }
 }

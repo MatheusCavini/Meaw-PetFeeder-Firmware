@@ -14,7 +14,7 @@ const int stepsPerRevolution = 2048;
 Stepper myStepper(stepsPerRevolution, IN1, IN3, IN2, IN4);
 
 void dispenser_init(){
-    myStepper.setSpeed(5);
+    myStepper.setSpeed(10);
 }
 
 void dispenserOpen(){
@@ -32,11 +32,13 @@ void releaseMotor(){
     digitalWrite(IN4, LOW);
 }
 
+//Função que usa as definidas anteriormente (abrir, fechar, release)
+//para servir uma porção
 void dispenserServePortion(){
     delay(1000);
     dispenserOpen();
     releaseMotor();
-    delay(5000);
+    delay(600);
     dispenserClose();
     delay(500);
     releaseMotor();

@@ -20,10 +20,12 @@ void displayShow(char string[], int row, int column){
     lcd.print(string);
 }
 
+//Limpa o display
 void displayClear(){
     lcd.clear();
 }
 
+//Exibe um horário no formato HH:MM na posição (row, column)
 void displayTime(int H, int M, int row, int column){
     char hour[3];
     char min[3];
