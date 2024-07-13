@@ -23,6 +23,8 @@ Click the image below to check the video of the project on YouTube (automatic En
 • Get an alert when the food level in the reservoir is low.
 
 ## Technical Aspects
-The firmware of the device runs a state machine, processing external (user inputs, app connection) and internal (reaching a saved time, low level) events to switch between different states.<br>
-FreeRTOS is used to run simultaneous tasks such as the state machine, checking food level and checking current time.<br>
-The physical device serves an API, to which the app connects and makes requests. <br>
+- The firmware of the device runs a state machine, processing external (user inputs, app connection) and internal (reaching a saved time, low level) events to switch between different states.<br>
+- FreeRTOS is used to run simultaneous tasks such as the state machine, checking food level and checking current time.<br>
+- Current time is obtained via internet. Further improvements may include a physical Real Time Clock module. <br>
+- The physical device serves an API, to which the app connects and makes requests. <br>
+
